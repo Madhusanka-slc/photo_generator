@@ -1,21 +1,39 @@
-from fastapi import (
-    Depends,
-    FastAPI, 
-    HTTPException,
-    Request,
-    )
+import redis.asyncio as redis
+from contextlib import asynccontextmanager
+from fastapi import Depends, FastAPI ,HTTPException
+from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
+from decouple import config
 import helpers
 from pydantic import BaseModel
-from decouple import config
+
+REDIS_URL = config("REDIS_URL")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+
+    redis_conn = redis.from_url(
+        REDIS_URL
+    )
+
+    await FastAPILimiter.init(redis_conn)
+
+    yield
+
+    await FastAPILimiter.close()
 
 
-REDIS_URL = config('REDIS_URL')
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 
-@app.get("/")
-def read_index():
+@app.get(
+    "/",
+    dependencies=[
+        Depends(RateLimiter(times=2, seconds=5)),
+        Depends(RateLimiter(times=4, seconds=20)),
+    ],
+)
+def read_root():
     # helpers.generate-image()
     return {"hello":"world"}
 
@@ -23,7 +41,11 @@ def read_index():
 class ImageGenerationRequest(BaseModel):
     prompt:str
     
-@app.post('/generate')
+@app.post('/generate',
+           dependencies=[
+        Depends(RateLimiter(times=2, seconds=5)),
+        Depends(RateLimiter(times=4, minute=1)),
+    ],)
 def create_image(data: ImageGenerationRequest):
     try:
         pred_result = helpers.generate_image(data.prompt)

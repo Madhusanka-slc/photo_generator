@@ -7,4 +7,5 @@ fastapi[standard]
 fastapi-limiter
 pathlib
 # support .heic images -> see readme
-pillow-heif 
+pillow-heif
+redis
