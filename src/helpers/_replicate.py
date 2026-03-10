@@ -2,12 +2,11 @@ from functools import lru_cache
 
 from decouple import config
 from replicate.client import Client
+from replicate.exceptions import ReplicateError
 
 REPLICATE_API_TOKEN = config("REPLICATE_API_TOKEN")
 REPLICATE_MODEL = config("REPLICATE_MODEL")
 REPLICATE_MODEL_VERSION = config("REPLICATE_MODEL_VERSION")
-
-replicate_client = Client(api_token=REPLICATE_API_TOKEN)
 
 @lru_cache
 def get_replicate_client():
@@ -19,6 +18,7 @@ def get_replicate_model_version():
     rep_model = replicate_client.models.get(REPLICATE_MODEL)
     rep_version = rep_model.versions.get(REPLICATE_MODEL_VERSION)
     return rep_version
+
 
 def generate_image(prompt, 
                 require_trigger_word=True, 
@@ -33,13 +33,49 @@ def generate_image(prompt,
     }
     replicate_client = get_replicate_client()
     rep_version = get_replicate_model_version()
-    pred = replicate_client.predictions.create(
+    return replicate_client.predictions.create(
         version=rep_version,
         input=input_args
     )
 
-    return {
-        "id" : pred.id,
-        "status": pred.status
-    }
+def list_prediction_results(
+        model=REPLICATE_MODEL, 
+        version=REPLICATE_MODEL_VERSION,
+        status=None,
+        max_size=500
+    ):
+    replicate_client = get_replicate_client()
+    preds = replicate_client.predictions.list()
+    results = list(preds.results)
+    while preds.next:
+        _preds = replicate_client.predictions.list(preds.next)
+        results += list(_preds.results)
+        if len(results) > max_size:
+            break
+    results = [x for x in results if x.model==model and x.version==version]
+    # results = [
+    # {
+    #     "url": f"/predictions/{x.id}",  # You might want to extract actual URLs here
+    #     "status": x.status,
+    #     "created_at": x.created_at,  # Fixed: added value and colon
+    #     "completed_at": x.completed_at  # Fixed: added value
+    # } 
+    # for x in results 
+    # if x.model == model and x.version == version
+    # ]
+    if status is not None:
+        results = [x for x in results if x.status == status]
+    return results
 
+
+def get_prediction_detail(
+        prediction_id=None
+    ):
+    replicate_client = get_replicate_client()
+    try:
+        pred = replicate_client.predictions.get(prediction_id)
+    except ReplicateError:
+        return None, 404
+    except:
+        return None, 500
+    return pred, 200

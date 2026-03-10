@@ -9,3 +9,4 @@ pathlib
 # support .heic images -> see readme
 pillow-heif
 redis
+# fastapi==0.100.0
