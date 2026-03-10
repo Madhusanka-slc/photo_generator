@@ -1,13 +1,17 @@
 import redis.asyncio as redis
 from contextlib import asynccontextmanager
-from fastapi import Depends, FastAPI ,HTTPException
+from fastapi import Depends, FastAPI ,HTTPException, Request,Response
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from decouple import config
 import helpers
 from pydantic import BaseModel
+from math import ceil
+from fastapi.responses import JSONResponse, StreamingResponse
 
 REDIS_URL = config("REDIS_URL")
+API_KEY_HEADER = "X-API-Key"
+API_ACCESS_KEY = config('API_ACCESS_KEY')
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -24,6 +28,26 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+
+@app.middleware("http")
+async def custom_api_key_middleware(request:Request, call_next):
+    req_key_header = request.headers.get(API_KEY_HEADER)
+    print("Key:",API_KEY_HEADER)
+    print(req_key_header)
+    if f"{req_key_header}" != API_ACCESS_KEY:
+        return JSONResponse(status_code=403, content={"detail": "Invalid Key, try again."})
+    response = await call_next(request)
+    return response
+
+@app.get("/", dependencies=[
+    Depends(RateLimiter(times=2, seconds=5)),
+    Depends(RateLimiter(times=4, seconds=20))
+])
+def read_root():
+    # helpers.generate_image()
+    return {"Hello": "World"}
 
 
 @app.get(
@@ -44,7 +68,7 @@ class ImageGenerationRequest(BaseModel):
 @app.post('/generate',
            dependencies=[
         Depends(RateLimiter(times=2, seconds=5)),
-        Depends(RateLimiter(times=4, minute=1)),
+        Depends(RateLimiter(times=10, seconds=60)),
     ],)
 def create_image(data: ImageGenerationRequest):
     try:
