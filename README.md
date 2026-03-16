@@ -1,51 +1,63 @@
 
 ---
 
+````markdown
 # 📸 RepliFace: AI Photo Generator
 
 **Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.**
 
-An AI-powered backend that lets you **generate and serve custom photos** using text prompts and generative models. This project demonstrates how to train/run models on Replicate and build a REST API around them.
+An AI-powered backend that lets you **generate and serve custom photos** using text prompts and generative models.  
+This project demonstrates how to train/run models on Replicate and build a REST API around them.
 
 ---
 
 ## 🧰 Tech Stack
 
-* **Python 3.13**
-* **FastAPI** – API framework
-* **Upstash Redis & QStash** – for rate limiting, caching, scheduling ([Upstash](https://upstash.com/?utm_source=cfe))
-* **Replicate** – generative AI model hosting ([Finetune model here](https://replicate.com/ostris/flux-dev-lora-trainer/train))
-* **Decouple** – environment configuration
-* **HTTP clients** (httpx/requests)
-* **Streaming Responses** for serving images
+- **Python 3.13**
+- **FastAPI** – API framework
+- **Upstash Redis & QStash** – for rate limiting, caching, scheduling  
+  ([Upstash](https://upstash.com/?utm_source=cfe))
+- **Replicate** – generative AI model hosting  
+  ([Finetune model here](https://replicate.com/ostris/flux-dev-lora-trainer/train))
+- **Decouple** – environment configuration
+- **HTTP clients** (`httpx` / `requests`)
+- **Streaming Responses** – for serving images
 
 ---
 
 ## 🚀 Features
 
-* Generate photos from text prompts.
-* Host and serve generated image files through API endpoints.
-* Rate limiting and async support.
-* Works with models that can be fine-tuned for personalized images.
+- Generate photos from text prompts.
+- Host and serve generated image files through API endpoints.
+- Rate limiting and async support.
+- Works with models that can be fine-tuned for personalized images.
 
 ---
 
 ## 📦 Getting Started
 
-### 1️⃣ Clone the Repo
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/Madhusanka-slc/photo_generator.git .
-```
+````
 
 ---
 
-### 2️⃣ Create a Python Environment
+### 2️⃣ Create a Virtual Environment
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate   # macOS/Linux
-.\venv\Scripts\activate    # Windows
+```
+
+Activate it:
+
+```bash
+# macOS / Linux
+source venv/bin/activate
+
+# Windows
+.\venv\Scripts\activate
 ```
 
 ---
@@ -60,13 +72,13 @@ pip install -r requirements.txt
 
 ### 4️⃣ Prepare Your Images & Run Pipeline
 
-#### 🔹 Put Your Own Images Inside:
+#### 🔹 Place Your Images Inside:
 
 ```
 data/inputs/
 ```
 
-#### 🔹 Then Run:
+#### 🔹 Run the Pipeline:
 
 ```bash
 python scripts/run_pipeline.py
@@ -81,15 +93,16 @@ This will:
 
 ---
 
-#### 🔹 Use the Zipped Images in `data/outputs/`
+#### 🔹 Use the Zipped Images
 
-Train your model in **Replicate** using the generated dataset zip file.
+Use the generated dataset zip file inside `data/outputs/`
+to train your model in **Replicate**.
 
 ---
 
-### 5️⃣ Configure Environment
+### 5️⃣ Configure Environment Variables
 
-Create a `.env` file and add your API keys:
+Create a `.env` file and add your credentials:
 
 ```env
 REPLICATE_API_TOKEN=your_replicate_token
@@ -125,3 +138,6 @@ http://127.0.0.1:8000
 | GET    | `/predictions/{id}/files/{index}.jpg` | Retrieve output image         |
 
 ---
+
+```
+
