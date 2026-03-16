@@ -1,11 +1,11 @@
 
 ---
 
-# 📸 RepliFace: AI Photo Generator 
+# 📸 RepliFace: AI Photo Generator
 
-**Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.** 
+**Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.**
 
-An AI‑powered backend that lets you **generate and serve custom photos** using text prompts and generative models. This project demonstrates how to train/run models on Replicate and build a REST API around them.
+An AI-powered backend that lets you **generate and serve custom photos** using text prompts and generative models. This project demonstrates how to train/run models on Replicate and build a REST API around them.
 
 ---
 
@@ -26,19 +26,21 @@ An AI‑powered backend that lets you **generate and serve custom photos** using
 * Generate photos from text prompts.
 * Host and serve generated image files through API endpoints.
 * Rate limiting and async support.
-* Works with models that can be fine‑tuned for personalized images
+* Works with models that can be fine-tuned for personalized images.
 
 ---
 
 ## 📦 Getting Started
 
-### 1. Clone the repo
+### 1️⃣ Clone the Repo
 
 ```bash
-git clone https://github.com/codingforentrepreneurs/super-me-photo-ai-api .
+git clone https://github.com/Madhusanka-slc/photo_generator.git .
 ```
 
-### 2. Create a Python environment
+---
+
+### 2️⃣ Create a Python Environment
 
 ```bash
 python3 -m venv venv
@@ -46,13 +48,46 @@ source venv/bin/activate   # macOS/Linux
 .\venv\Scripts\activate    # Windows
 ```
 
-### 3. Install dependencies
+---
+
+### 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure environment
+---
+
+### 4️⃣ Prepare Your Images & Run Pipeline
+
+#### 🔹 Put Your Own Images Inside:
+
+```
+data/inputs/
+```
+
+#### 🔹 Then Run:
+
+```bash
+python scripts/run_pipeline.py
+```
+
+This will:
+
+* Create dataset zip
+* Validate images
+* Optimize images
+* Generate final zip in `data/outputs/`
+
+---
+
+#### 🔹 Use the Zipped Images in `data/outputs/`
+
+Train your model in **Replicate** using the generated dataset zip file.
+
+---
+
+### 5️⃣ Configure Environment
 
 Create a `.env` file and add your API keys:
 
@@ -64,7 +99,9 @@ REPLICATE_MODEL=your_model_name
 REPLICATE_MODEL_VERSION=your_model_version
 ```
 
-### 5. Run the API
+---
+
+### 6️⃣ Run the API
 
 ```bash
 uvicorn main:app --reload
