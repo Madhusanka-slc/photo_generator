@@ -3,7 +3,7 @@
 
 # 📸 Super‑Me Photo AI API
 
-**Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.** ([GitHub][1])
+**Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.** 
 
 An AI‑powered backend that lets you **generate and serve custom photos** using text prompts and generative models. This project demonstrates how to train/run models on Replicate and build a REST API around them.
 
@@ -17,7 +17,7 @@ An AI‑powered backend that lets you **generate and serve custom photos** using
 * **Replicate** – generative AI model hosting ([Finetune model here](https://replicate.com/ostris/flux-dev-lora-trainer/train))
 * **Decouple** – environment configuration
 * **HTTP clients** (httpx/requests)
-* **Streaming Responses** for serving images ([GitHub][1])
+* **Streaming Responses** for serving images
 
 ---
 
@@ -26,7 +26,7 @@ An AI‑powered backend that lets you **generate and serve custom photos** using
 * Generate photos from text prompts.
 * Host and serve generated image files through API endpoints.
 * Rate limiting and async support.
-* Works with models that can be fine‑tuned for personalized images ([Replicate finetune link](https://replicate.com/ostris/flux-dev-lora-trainer/train))
+* Works with models that can be fine‑tuned for personalized images
 
 ---
 
