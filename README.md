@@ -1,7 +1,3 @@
-
----
-
-````markdown
 # 📸 RepliFace: AI Photo Generator
 
 **Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.**
@@ -27,10 +23,10 @@ This project demonstrates how to train/run models on Replicate and build a REST 
 
 ## 🚀 Features
 
-- Generate photos from text prompts.
-- Host and serve generated image files through API endpoints.
-- Rate limiting and async support.
-- Works with models that can be fine-tuned for personalized images.
+- Generate photos from text prompts
+- Host and serve generated image files through API endpoints
+- Rate limiting and async support
+- Works with models that can be fine-tuned for personalized images
 
 ---
 
@@ -39,10 +35,9 @@ This project demonstrates how to train/run models on Replicate and build a REST 
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/Madhusanka-slc/photo_generator.git .
-````
-
----
+git clone https://github.com/Madhusanka-slc/photo_generator.git
+cd photo_generator
+```
 
 ### 2️⃣ Create a Virtual Environment
 
@@ -60,15 +55,11 @@ source venv/bin/activate
 .\venv\Scripts\activate
 ```
 
----
-
 ### 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
-
----
 
 ### 4️⃣ Prepare Your Images & Run Pipeline
 
@@ -86,19 +77,14 @@ python scripts/run_pipeline.py
 
 This will:
 
-* Create dataset zip
-* Validate images
-* Optimize images
-* Generate final zip in `data/outputs/`
-
----
+- Create dataset zip
+- Validate images
+- Optimize images
+- Generate final zip in `data/outputs/`
 
 #### 🔹 Use the Zipped Images
 
-Use the generated dataset zip file inside `data/outputs/`
-to train your model in **Replicate**.
-
----
+Use the generated dataset zip file inside `data/outputs/` to train your model in **Replicate**.
 
 ### 5️⃣ Configure Environment Variables
 
@@ -111,8 +97,6 @@ REDIS_URL=your_redis_url
 REPLICATE_MODEL=your_model_name
 REPLICATE_MODEL_VERSION=your_model_version
 ```
-
----
 
 ### 6️⃣ Run the API
 
@@ -131,13 +115,8 @@ http://127.0.0.1:8000
 ## 📝 Example Endpoints
 
 | Method | Route                                 | Description                   |
-| ------ | ------------------------------------- | ----------------------------- |
+|--------|---------------------------------------|-------------------------------|
 | POST   | `/generate`                           | Generate images from a prompt |
 | GET    | `/predictions`                        | List predictions              |
-| GET    | `/predictions/{id}`                   | Get prediction details        |
-| GET    | `/predictions/{id}/files/{index}.jpg` | Retrieve output image         |
-
----
-
-```
-
+| GET    | `/predictions/{id}`                    | Get prediction details        |
+| GET    | `/predictions/{id}/files/{index}.jpg`  | Retrieve output image         |
