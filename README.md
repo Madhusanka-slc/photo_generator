@@ -1,7 +1,7 @@
 
 ---
 
-# 📸 Super‑Me: AI Photo Generator 
+# 📸 RepliFace: AI Photo Generator 
 
 **Learn how to build a generative photo API using Python, FastAPI, Redis, and Replicate.** 
 
